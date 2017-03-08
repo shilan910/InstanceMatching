@@ -1,9 +1,12 @@
 package com.zqh;
 
+import javax.xml.transform.dom.DOMLocator;
+import java.util.Comparator;
+
 /**
  * Created by sl on 2017/3/1.
  */
-public class Result {
+public class Result implements Comparable {
 
     private String entity1;
     private String entity2;
@@ -17,6 +20,12 @@ public class Result {
         this.relation = relation;
         this.datatype = datatype;
         this.measure = measure;
+    }
+
+    public int compareTo(Object o1) {
+        Result r1 = (Result)o1;
+        double r1_m = Double.valueOf(r1.getMeasure());
+        return Double.valueOf(this.measure).compareTo(r1_m);
     }
 
     @Override
@@ -42,6 +51,8 @@ public class Result {
         result = 31 * result + (measure != null ? measure.hashCode() : 0);
         return result;
     }
+
+
 
     public String getEntity1() {
         return entity1;

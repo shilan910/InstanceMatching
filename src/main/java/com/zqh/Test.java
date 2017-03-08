@@ -1,6 +1,5 @@
 package com.zqh;
 
-import com.sun.org.apache.regexp.internal.RE;
 
 import java.util.List;
 
@@ -12,25 +11,32 @@ public class Test {
 
     public static void main(String args[]) throws Exception{
 
+        String filrPrefix = "/Users/sl/Desktop/zqh/PR/person2/";
+//        String filrPrefix = "/Users/sl/Desktop/zqh/PR/restaurants_2/";
+//
         String prefix = "http://www.okkam.org/oaie/";
-        FileToEntity fileToEntity1 = new FileToEntity(prefix,
-                "/Users/sl/Desktop/zqh/PR/person1/person11.rdf");
+        FileToEntity fileToEntity1 = new FileToEntity(prefix, filrPrefix+"person21.rdf");
         List<Entity> entities11 = fileToEntity1.extractEntity();
 
-        FileToEntity fileToEntity2 = new FileToEntity(prefix,
-                "/Users/sl/Desktop/zqh/PR/person1/person12.rdf");
+        FileToEntity fileToEntity2 = new FileToEntity(prefix, filrPrefix+"person22.rdf");
         List<Entity> entities12 = fileToEntity2.extractEntity();
 
+//        System.out.println(entities11.size());
+//        System.out.println(entities12.size()+"\n");
 
-        Compare compare = new Compare();
+        //restaurant1_restaurant2_goldstandard.xml
+        //dataset21_dataset22_goldstandard_person.xml
+//        dataset11_dataset12_goldstandard_person
 
-        List<Result> exps = compare.compareEntity(entities11,entities12);
 
-        XMLHelper xmlHelper = new XMLHelper("/Users/sl/Desktop/zqh/PR/person1/" +
-                "dataset11_dataset12_goldstandard_person.xml");
+        XMLHelper xmlHelper = new XMLHelper(filrPrefix+ "dataset21_dataset22_goldstandard_person.xml");
+
         List<Result> reals = xmlHelper.run();
 
-        compare.compareResult(reals,exps);
+        Compare compare = new Compare(entities11,entities12,reals);
+
+        compare.compareResult();
+//        compare.countWeight();
 
     }
 

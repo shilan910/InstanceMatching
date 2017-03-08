@@ -41,7 +41,7 @@ public class FileToEntity {
         for(StmtIterator i = model.listStatements() ; i.hasNext() ; ){
             Statement j = i.nextStatement();
             String subject = j.getSubject().toString();
-            if(!subjectList.contains(subject) && subject.contains("Person")){
+            if(!subjectList.contains(subject) && (subject.contains("Person") || subject.contains("Restaurant"))){
                 subjectList.add(subject);
             }
         }
@@ -81,22 +81,27 @@ public class FileToEntity {
                     object = object.substring(object.indexOf('#')+1);
                 }
 
-                if(predicate.equals("name")){
+                if(predicate.equals("name")){   //处理name作为重复属性的问题
                     if(subject.contains("State"))
                         predicate = "state";
-                    else
+                    else if(subject.contains("Suburb"))
                         predicate = "suburb";
-                }else if(predicate.equals("type")){
+                    else if(subject.contains("City"))
+                        predicate = "city";
+                    else
+                        predicate = "name";
+
+                }else if(predicate.equals("type")){ //处理type不一致问题
                     object = "Person";
+                    continue;
                 }
+
+
+
                 predicate_object.put(predicate,object);
             }
         }
-
         queryExecution.close();
-
     }
-
-
 
 }
