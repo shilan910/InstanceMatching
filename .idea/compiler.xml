@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="InstanceMatching" />
+        <module name="Sparql" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="InstanceMatching" target="1.5" />
+      <module name="Sparql" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

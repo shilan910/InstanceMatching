@@ -43,8 +43,6 @@ public class XMLHelper {
 
             results.add(new Result( node.element("entity1").attributeValue("resource"),
                                     node.element("entity2").attributeValue("resource"),
-                                    node.element("relation").getData().toString(),
-                                    node.element("measure").attributeValue("datatype"),
                                     node.element("measure").getData().toString()));
 
 //            System.out.println("\n"+node.element("entity1").attributeValue("resource"));

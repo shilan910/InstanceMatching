@@ -1,5 +1,7 @@
 package com.zqh.util;
 
+import org.apache.commons.lang3.builder.Diff;
+
 /**
  * Created by sl on 2017/3/6.
  */
@@ -8,12 +10,21 @@ public class Levenshtein {
 
     public static void main(String[] args) {
         //要比较的两个字符串
-        String str1 = "frenchnew";
-        String str2 = "french";
-        System.out.println(Levenshtein.levenshtein(str1,str2));
+        String str1 = "212/753-1870";
+        String str2 = "212/753-1871";
+        Levenshtein.levenshtein(str1,str2);
+
+        String str3 = "2127531870";
+        String str4 = "2127531871";
+        Levenshtein.levenshtein(str3,str4);
+
+        String str5 = "abcdefhijk";
+        String str6 = "abcdefhijl";
+        Levenshtein.levenshtein(str5,str6);
+
+//        System.out.println(Levenshtein.levenshtein(str1,str2));
 //        levenshtein(str1,str2);
     }
-
 
     public static double levenshtein(String str1,String str2) {
         if(str1==null || str2==null || str1.equals("") || str2.equals("")){

@@ -10,15 +10,15 @@ public class Result implements Comparable {
 
     private String entity1;
     private String entity2;
-    private String relation;
-    private String datatype;
+//    private String relation;
+//    private String datatype;
     private String measure;
 
-    public Result(String entity1, String entity2, String relation, String datatype, String measure) {
+    public Result(String entity1, String entity2, String measure) {
         this.entity1 = entity1;
         this.entity2 = entity2;
-        this.relation = relation;
-        this.datatype = datatype;
+//        this.relation = relation;
+//        this.datatype = datatype;
         this.measure = measure;
     }
 
@@ -37,8 +37,8 @@ public class Result implements Comparable {
 
         if (entity1 != null ? !entity1.equals(result.entity1) : result.entity1 != null) return false;
         if (entity2 != null ? !entity2.equals(result.entity2) : result.entity2 != null) return false;
-        if (relation != null ? !relation.equals(result.relation) : result.relation != null) return false;
-        if (datatype != null ? !datatype.equals(result.datatype) : result.datatype != null) return false;
+//        if (relation != null ? !relation.equals(result.relation) : result.relation != null) return false;
+//        if (datatype != null ? !datatype.equals(result.datatype) : result.datatype != null) return false;
         return measure != null ? measure.equals(result.measure) : result.measure == null;
     }
 
@@ -46,8 +46,8 @@ public class Result implements Comparable {
     public int hashCode() {
         int result = entity1 != null ? entity1.hashCode() : 0;
         result = 31 * result + (entity2 != null ? entity2.hashCode() : 0);
-        result = 31 * result + (relation != null ? relation.hashCode() : 0);
-        result = 31 * result + (datatype != null ? datatype.hashCode() : 0);
+//        result = 31 * result + (relation != null ? relation.hashCode() : 0);
+//        result = 31 * result + (datatype != null ? datatype.hashCode() : 0);
         result = 31 * result + (measure != null ? measure.hashCode() : 0);
         return result;
     }
@@ -70,21 +70,6 @@ public class Result implements Comparable {
         this.entity2 = entity2;
     }
 
-    public String getRelation() {
-        return relation;
-    }
-
-    public void setRelation(String relation) {
-        this.relation = relation;
-    }
-
-    public String getDatatype() {
-        return datatype;
-    }
-
-    public void setDatatype(String datatype) {
-        this.datatype = datatype;
-    }
 
     public String getMeasure() {
         return measure;
