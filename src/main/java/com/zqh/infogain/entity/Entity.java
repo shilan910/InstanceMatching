@@ -40,4 +40,22 @@ public class Entity {
     public void setPredicate_object(List<String> predicate_object) {
         this.predicate_object = predicate_object;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Entity entity = (Entity) o;
+
+        if (!subject.equals(entity.subject)) return false;
+        return predicate_objects.equals(entity.predicate_objects);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = subject.hashCode();
+        result = 31 * result + predicate_objects.hashCode();
+        return result;
+    }
 }

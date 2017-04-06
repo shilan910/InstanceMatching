@@ -170,7 +170,7 @@ public class Query {
      */
     public List<String> getIFPs(){
         List<String> IFPs = new ArrayList<String>();
-        String queryString ="SELECT ?subject WHERE { ?subject <http://www.w3.org/2002/07/owl#inverseOf> ?object}";
+        String queryString ="SELECT ?subject WHERE { ?subject <http://www.w3.org/2000/01/rdf-schema#domain> ?object}";
         org.apache.jena.query.Query query = QueryFactory.create(queryString);
         QueryExecution queryExecution = QueryExecutionFactory.create(query,model);
         ResultSet resultSet = queryExecution.execSelect();
@@ -183,6 +183,10 @@ public class Query {
         }
         queryExecution.close();
 
+
+
+
+
         List<String> IFPs_new = new ArrayList<String>();
         for(String IFP : IFPs){
             IFPs_new.add(extractString(IFP));
@@ -193,14 +197,14 @@ public class Query {
 
 
     public static void main(String args[]){
-        Query query = new Query("D:\\data\\Doremus\\fp-trap\\PP-3.owl");
-
-        List<Entity> entities = query.extractEntity();
-        System.out.println("\n");
-        for(Entity entity : entities){
-            System.out.println(entity.getSubject()+" : "+entity.getPredicate_objects().size());
-        }
-        System.out.println(entities.size());
+//        Query query = new Query("D:\\data\\Doremus\\fp-trap\\PP-3.owl");
+//
+//        List<Entity> entities = query.extractEntity();
+//        System.out.println("\n");
+//        for(Entity entity : entities){
+//            System.out.println(entity.getSubject()+" : "+entity.getPredicate_objects().size());
+//        }
+//        System.out.println(entities.size());
 //
 //        List<String> ps = query.extractProperty();
 //        for(String s : ps){
