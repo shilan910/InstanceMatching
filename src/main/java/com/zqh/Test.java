@@ -5,8 +5,7 @@ import com.zqh.FPGrowth.example.FP_Item;
 import com.zqh.FPGrowth.example.RunFPGrowth;
 import com.zqh.infogain.entity.Entity;
 
-import java.io.FileOutputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -16,34 +15,30 @@ public class Test {
 
 
     public static void main(String args[]) throws Exception {
+        String fileName = "D:/data/new/freebase-datadump-quadruples.tsv";
+        File file = new File(fileName);
 
-        String filePrefix = "D:/data/PR/person1/";
-
-//        FileToEntity fileToEntity1 = new FileToEntity(filePrefix + "person11.rdf");
-//        FileToEntity fileToEntity2 = new FileToEntity(filePrefix + "person12.rdf");
-
-        System.out.println("fileToEntity start ...");
-
-//        List<Entity> entities1 = fileToEntity1.extractEntity();
-//        List<Entity> entities2 = fileToEntity2.extractEntity();
-
-        System.out.println("fileToEntity done!");
-
-
-        System.out.println("FPGrowth start ...");
-//        RunFPGrowth runFPGrowth = new RunFPGrowth(entities1, entities2);
-//        List<FP_Item> FP_items = runFPGrowth.run();
-        System.out.println("FPGrowth done!");
-
-        System.out.println("XMLHelper start ...");
-        XMLHelper xmlHelper = new XMLHelper(filePrefix + "dataset11_dataset12_goldstandard_person.xml");
-        List<Result> reals = xmlHelper.run();
-        System.out.println("XMLHelper done!");
-
-        System.out.println("Compare start ...");
-//        Compare compare = new Compare(entities1, entities2, reals, FP_items);
-//        compare.compareResult();
-        System.out.println("Compare done!");
+        InputStream in = null;
+        try {
+            System.out.println("以字节为单位读取文件内容，一次读多个字节：");
+            // 一次读多个字节
+            byte[] tempbytes = new byte[1000];
+            int byteread = 0;
+            in = new FileInputStream(fileName);
+            // 读入多个字节到字节数组中，byteread为一次读入的字节数
+            while ((byteread = in.read(tempbytes)) != -1) {
+                System.out.write(tempbytes, 0, byteread);
+            }
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e1) {
+                }
+            }
+        }
 
     }
 }

@@ -20,13 +20,12 @@ public class Similarity {
         this.sim = sim;
     }
 
+
     /**
      * 找出满足 property1 和 property2 相似度不低于sim的实体
-     * @param property1
-     * @param property2
      * @return
      */
-    public List<Entity> getEntityPairNum(String property1 , String property2){
+    public List<Entity> getEntityBy2Property( String property1 , String property2){
         List<Entity> entities_sim = new ArrayList<Entity>();
         int size = entities.size();
         boolean flag;
@@ -34,12 +33,12 @@ public class Similarity {
             flag = true;
             Entity entity1 = entities.get(i);
             List<String> p1_objects = getProperty_Objects(entity1,property1);
-            if(p1_objects == null)
+            if(p1_objects==null || p1_objects.size()==0)
                 continue;
             for(int j=i+1 ; j<size ; j++){
                 Entity entity2 = entities.get(j);
                 List<String> p2_objects = getProperty_Objects(entity2,property2);
-                if(p2_objects == null)
+                if(p2_objects==null || p2_objects.size()==0)
                     continue;
                 double maxSimilarity=0 , similarity;
                 for(String p1_o : p1_objects){
@@ -50,6 +49,7 @@ public class Similarity {
                         }
                     }
                 }
+
                 if(maxSimilarity>=sim){
                     if(!entities_sim.contains(entity2))
                         entities_sim.add(entity2);
@@ -71,5 +71,4 @@ public class Similarity {
         }
         return null;
     }
-
 }

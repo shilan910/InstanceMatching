@@ -9,7 +9,7 @@ import java.util.Map;
 public class Entity {
 
     private String subject;
-    private List<String> predicate_object;
+//    private List<String> predicate_object;
     private Map<String,List<String>> predicate_objects;
 
     public Entity(String subject, Map<String, List<String>> predicate_objects) {
@@ -33,13 +33,13 @@ public class Entity {
         this.subject = subject;
     }
 
-    public List<String> getPredicate_object() {
-        return predicate_object;
-    }
+//    public List<String> getPredicate_object() {
+//        return predicate_object;
+//    }
 
-    public void setPredicate_object(List<String> predicate_object) {
-        this.predicate_object = predicate_object;
-    }
+//    public void setPredicate_object(List<String> predicate_object) {
+//        this.predicate_object = predicate_object;
+//    }
 
     @Override
     public boolean equals(Object o) {

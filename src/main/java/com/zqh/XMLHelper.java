@@ -22,6 +22,21 @@ public class XMLHelper {
         this.fileName = fileName;
     }
 
+    public static void main(String args[]){
+        XMLHelper xmlHelper = new XMLHelper("D:\\data\\new\\nytimes-mappings-split\\nyt-dbpedia-people-mappings.rdf");
+        try {
+            List<Result> results = xmlHelper.run();
+            for(Result result : results){
+                System.out.println(result.getEntity1());
+                System.out.println(result.getEntity2());
+                System.out.println(result.getMeasure()+"\n");
+            }
+            System.out.println(results.size());
+
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<Result> run() throws DocumentException {
         SAXReader reader = new SAXReader();
@@ -36,23 +51,11 @@ public class XMLHelper {
 
     //遍历当前节点下的所有节点
     private void listNodes(Element node , List<Result> results){
-//        System.out.println("当前节点的名称：" + node.getName());
-
         if(node.getName().equals("Cell")){
-
-
             results.add(new Result( node.element("entity1").attributeValue("resource"),
                                     node.element("entity2").attributeValue("resource"),
                                     node.element("measure").getData().toString()));
-
-//            System.out.println("\n"+node.element("entity1").attributeValue("resource"));
-//            System.out.println(node.element("entity2").attributeValue("resource"));
-//            System.out.println(node.element("relation").getData().toString());
-//            System.out.println(node.element("measure").attributeValue("datatype"));
-//            System.out.println(node.element("measure").getData().toString()+"\n");
         }
-
-
         Iterator<Element> iterator = node.elementIterator();
         while(iterator.hasNext()){
             Element e = iterator.next();

@@ -2,8 +2,14 @@ package com.zqh;
 
 import com.zqh.FPGrowth.example.FP_Item;
 import com.zqh.FPGrowth.example.RunFPGrowth;
+import com.zqh.infogain.DBHelper;
 import com.zqh.infogain.entity.Entity;
+import org.dom4j.DocumentException;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -11,27 +17,26 @@ import java.util.*;
  */
 public class Compare {
 
-    private List<Entity> entities1;
-    private List<Entity> entities2;
-    private List<FP_Item> FP_items;
-    private List<Result> reals;
-    private List<Result> exps;
+    private static List<Result> reals;
+    private static List<Result> exps;
 
-    public Compare(List<Entity> entities1, List<Entity> entities2, List<Result> reals , List<FP_Item> FP_items) {
-        this.entities1 = entities1;
-        this.entities2 = entities2;
+    public Compare(List<Result> reals) {
         this.reals = reals;
-        this.FP_items = FP_items;
         exps = new ArrayList<Result>();
+    }
+
+    public static void main(String args[]) throws DocumentException {
+        XMLHelper xmlHelper = new XMLHelper("D:\\data\\new\\nytimes-mappings-split\\nyt-dbpedia-people-mappings.rdf");
+        reals = xmlHelper.run();
+        Compare compare = new Compare(reals);
+        compare.compareResult();
     }
 
     /**
      * 与标准答案比较
      */
     public void compareResult(){
-
-        compareEntity();
-
+        getExps();
         int matchNum = 0;
         int notmatchNum = 0;
 
@@ -39,23 +44,10 @@ public class Compare {
             if(reals.contains(exp)){
                 matchNum++;
             }else{
+                System.out.println(exp.getEntity1()+"   "+exp.getEntity2());
                 notmatchNum++;
-//                System.out.println("错误匹配：");
-//                System.out.println(exp.getEntity1());
-//                System.out.println(exp.getEntity2()+"\n");
             }
         }
-//        for(Result re : exps){
-//            if(re.getEntity1().equals("http://www.okkam.org/oaie/person1-Person00"))
-//                System.out.println(re.getEntity2()+"\n");
-////            break;
-//        }
-//
-//        for(Result re : reals){
-//            System.out.println(re.getEntity1());
-//            System.out.println(re.getEntity2()+"\n");
-//            break;
-//        }
 
         double p = matchNum/(double)exps.size();
         double r = matchNum/(double)reals.size();
@@ -69,73 +61,20 @@ public class Compare {
         System.out.println("F-1-measure: "+2*p*r/(p+r)*100+"%");
     }
 
-    /**
-     * 匹配两个实体集合
-     */
-    private void compareEntity(){
-
-
-        for(Entity entity : entities1){
-            findItemsForEntity(entity);
-        }
-
-        for(Entity entity : entities2){
-            findItemsForEntity(entity);
-        }
-
-        System.out.println("findItemsForEntity done!");
-        System.out.println("entities1.size() = "+entities1.size());
-        System.out.println("entities2.size() = "+entities2.size());
-
-        int cnt=1;
-        int temp=1;
-        for(Entity entity1 : entities1){
-            double measure=0;
-//            List<FP_Item> fp_items1 = entity1.getItems();
-//            System.out.println("\nfp_items1 = "+fp_items1.size());
-//            System.out.println(cnt++);
-            for(Entity entity2 : entities2){
-//                List<FP_Item> fp_items2 = entity2.getItems();
-//                System.out.println("fp_items2 = "+fp_items2.size());
-
-//                for(FP_Item fp_item2 : fp_items2){
-//                    if(fp_items1.contains(fp_item2)){
-//                        measure += fp_item2.getWeight();
-//                    }
-                }
-                if(measure >= 95){
-//                    if(temp%1007==0){
-//                        System.out.println("entity1.getSubject() : "+entity1.getSubject());
-//                        System.out.println("entity2.getSubject() : "+entity2.getSubject());
-//                        System.out.println("measure = "+measure);
-//                    }
-                    temp++;
-//                    exps.add(new Result("http://www.okkam.org/oaie/"+entity1.getSubject(),
-//                            "http://www.okkam.org/oaie/"+entity2.getSubject(),"1.0"));
-                }
-
+    private static void getExps(){
+        try{
+            Connection conn = DBHelper.getConn();
+            String sql = "select s1,s2 from nyt_dbpedia_linkdata";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                exps.add(new Result(rs.getString(1),rs.getString(2),"1.0"));
             }
-
-        }
-
-
-//    }
-
-    private void findItemsForEntity(Entity entity){
-        List<String> predicate_object = entity.getPredicate_object();
-//        List<FP_Item> items = entity.getItems();
-
-        for(FP_Item fp : FP_items){
-            boolean flag = true;
-            List<String>  fp_items = fp.getItems();
-            for(String item : fp_items){
-                if(!predicate_object.contains(item)){
-                    flag = false;
-                    break;
-                }
-            }
-//            if(flag)
-//                items.add(fp);
+            rs.close();
+            statement.close();
+            conn.close();
+        }catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
