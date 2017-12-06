@@ -10,19 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Double.POSITIVE_INFINITY;
-import static java.lang.Double.toHexString;
 
 /**
  * Created by Administrator on 2017/7/11.
  */
 public class Main {
 
-    public static void main(String args[]){
+    public static void run(String folder){
         long startTime=System.currentTimeMillis();   //获取开始时间
-
-        FileReader fileReader1 = new FileReader("C:/Users/Administrator/Desktop/OAEI2017/data/FORTH_sandbox/Linking/Abox1.nt");
+        FileReader fileReader1 = new FileReader(folder+"Abox1.nt");
         List<Trace> traces1 = fileReader1.getTraces();
-        FileReader fileReader2 = new FileReader("C:/Users/Administrator/Desktop/OAEI2017/data/FORTH_sandbox/Linking/Abox2.nt");
+        FileReader fileReader2 = new FileReader(folder+"Abox2.nt");
         List<Trace> traces2 = fileReader2.getTraces();
 
         System.out.println("\ntraces.size() : "+traces1.size());
@@ -33,24 +31,15 @@ public class Main {
         double measure,measure_min;
         int cnt=0;
         for (Trace trace1 : traces1){
-//            if(!trace1.getTraceName().equals("http://www.tomtom.com/trace-data/0000001865.ttl#trace"))
-//                continue;
             System.out.println("cnt: "+cnt++);
-//            System.out.println("trace1.getPoints().size() : "+trace1.getPoints().size());
             String traceName2="";
             measure_min = POSITIVE_INFINITY;
-            int cnt2=1;
             for(Trace trace2 : traces2){
-//                System.out.println(cnt2++);
                 measure = dtw.getSimilarity(trace1,trace2,measure_min);
                 if(measure<measure_min) {
                     measure_min = measure;
                     traceName2 = trace2.getTraceName();
                 }
-//                System.out.println("trace2.getPoints().size() : "+trace2.getPoints().size());
-
-//                System.out.println(trace2.getTraceName());
-//                System.out.println(measure+"\n");
             }
             resultsExp.add(new Result(trace1.getTraceName(),traceName2));
             System.out.println(trace1.getTraceName());
@@ -58,7 +47,7 @@ public class Main {
             System.out.println("measure = "+measure_min+"\n");
         }
 
-        GoldReader goldReader = new GoldReader("C:/Users/Administrator/Desktop/OAEI2017/data/FORTH_sandbox/Linking/refalign.rdf");
+        GoldReader goldReader = new GoldReader(folder+"refalign.rdf");
         List<Result> resultsGold = goldReader.getResults();
 
         //结果比较
@@ -94,6 +83,11 @@ public class Main {
         long endTime = System.currentTimeMillis();   //获取结束时间
         double runTime = (endTime-startTime)/1000;
         System.out.println("运行时间： "+(int)(runTime/3600)+"h "+(int)((runTime%3600)/60)+"m "+runTime%60+"s");
+    }
 
+    public static void main(String args[]){
+        // 需要配置数据所在文件夹路径
+        String folder = "C:\\Users\\SL\\Desktop\\OAEI2017\\data\\FORTH_sandbox\\Linking\\";
+        run(folder);
     }
 }

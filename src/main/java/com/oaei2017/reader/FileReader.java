@@ -27,9 +27,6 @@ public class FileReader {
     public FileReader(String filename){
         this.filename = filename;
         init();
-        exactTrace();
-        deleteZore();
-        deleteOthers();
     }
 
     public void init() {
@@ -44,6 +41,7 @@ public class FileReader {
         }else{
             model.read(in,null);
         }
+        exactTrace();
     }
 
     private void exactTrace(){
@@ -81,7 +79,8 @@ public class FileReader {
             queryExecution1.close();
             traces.add(new Trace(traceName,points));
         }
-
+        deleteZore();
+        deleteOthers();
     }
 
     private Point exactPointByName(String pointName){
@@ -228,9 +227,7 @@ public class FileReader {
         System.out.println("\ntraces.size() : "+traces.size());
 
         for(Trace trace : traces){
-//            System.out.println(trace.getTraceName());
             if(trace.getTraceName().equals("http://www.hobbit.e1478d63b-41cd-4f6c-9f71-6533b06ce5ef")){
-//            if(trace.getTraceName().equals("http://www.tomtom.com/trace-data/0000001865.ttl#trace")){
                 System.out.println("trace.getPoints().size() : "+trace.getPoints().size());
                 for(Point point : trace.getPoints()){
                     System.out.println(point.getLongitude());
@@ -240,17 +237,6 @@ public class FileReader {
                     System.out.println(point.getLatitude());
                 }
             }
-
-//            for(Point point : trace.getPoints()){
-//                System.out.println(point.getPointName());
-//                System.out.println(point.getLongitude());
-//                System.out.println(point.getLatitude());
-//                System.out.println(point.getLongitude());
-//            }
         }
-//        Long a = turnTime("11/19/10");
-//        System.out.println(a);
-
-
     }
 }
